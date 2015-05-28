@@ -21,35 +21,6 @@ search: true
 
 Welcome the future home for the documentation for the GFW-API. For now this is nothing more than a few notes to help us get started.
 
-# Endpoints
-
-Example: /forest-change/forma-alerts/admin/iso => (forma-alerts, iso)
-
-As a starting point, under the python tab on the right is the python code for the forest change endpoints.
-
-```python
-dataset = _dataset_from_path(path)
-path = path.strip("/")
-rtype = None
-
-if re.match(r'forest-change/%s$' % dataset, path):
-    rtype = 'all'
-elif re.match(r'forest-change/%s/latest$' % dataset, path):
-    rtype = 'latest'
-elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}$' % dataset, path):
-    rtype = 'ifl'
-elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}/\d$' % dataset, path):
-    rtype = 'ifl_id1'        
-elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
-    rtype = 'iso'
-elif re.match(r'forest-change/%s/admin/[A-z]{3,3}/\d+$' % dataset, path):
-    rtype = 'id1'
-elif re.match(r'forest-change/%s/wdpa/\d+$' % dataset, path):
-    rtype = 'wdpa'
-elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
-    rtype = 'use'
-```
-
 # Documentation Conventions
 
 * endpoint
@@ -62,6 +33,11 @@ elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
 # Conventions
 
 * all under a module/namespace named API
+* i am thinking each section should be namespaced:
+  - GFW::API.forestChange.national(...)
+  - GFW::API.forestChange.subnational(...)
+  - GFW::API.forestChange.geometry(...)
+  - ...
 * camelCase for method names
 * ...
 
@@ -104,14 +80,14 @@ bust | ... | False | ...
 ```ruby
 gem install 'gfw-ruby'
 
-GFW::API.forestChange(...)
+GFW::API.forestChange.national(...)
 ```
 
 ```python
 pip install 'gfw-python'
 
 import gfw
-gfw.API.forestChange(...)
+gfw.API.forestChange.national(...)
 
 ```
 
