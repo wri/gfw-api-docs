@@ -61,20 +61,6 @@ if re.match(r'forest-change/%s$' % dataset, path):
 
 ## National
 
-elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
-    rtype = 'iso'
-
-`GET http://http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>`
-
-### Optional Query Parameters
-Parameter | Default | Description
---------- | ------- | -------- 
-period | ... | time period to search for alerts
-download | ... | ...
-geojson | ... | *required for ...  
-dev | ... | ...
-bust | ... | cache or no
-
 ```ruby
 gem install 'gfw-ruby'
 
@@ -88,10 +74,6 @@ import gfw
 gfw.API.forestChange.national(iso,options={})
 
 ```
-
-<aside class="success">
-EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
-</aside>
 
 > The above command returns JSON structured like this:
 
@@ -134,6 +116,23 @@ EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/ID
 }
 ```
 
+elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
+    rtype = 'iso'
+
+`GET http://http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>`
+
+### Optional Query Parameters
+Parameter | Default | Description
+--------- | ------- | -------- 
+period | ... | time period to search for alerts
+download | ... | ...
+geojson | ... | *required for ...  
+dev | ... | ...
+bust | ... | cache or no
+
+<aside class="success">
+EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
+</aside>
 
 ## Sub-National
 
