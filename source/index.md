@@ -2,6 +2,7 @@
 title: API Reference
 
 language_tabs:
+  - shell
   - ruby
   - python
 
@@ -48,12 +49,21 @@ elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
     rtype = 'use'
 ```
 
+# Documentation Conventions
+
+* endpoint
+* required parameters it takes
+* optional parameters
+* method-name for client libraries
+* description
+* examples
+
 # Conventions
 
 We still need to flush this out naming convetions to should be as close to the same for all as possible for all languages. As a first go I'd say:
 
 * all under a module/namespace named API
-* snake_case for method names
+* camel_case for method names
 * ...
 
 ```ruby
