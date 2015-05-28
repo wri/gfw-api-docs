@@ -51,33 +51,6 @@
 
 <p>Welcome the future home for the documentation for the GFW-API. For now this is nothing more than a few notes to help us get started.</p>
 
-<h1 id="endpoints">Endpoints</h1>
-
-<p>Example: /forest-change/forma-alerts/admin/iso =&gt; (forma-alerts, iso)</p>
-
-<p>As a starting point, under the python tab on the right is the python code for the forest change endpoints.</p>
-<pre class="highlight python"><code><span class="n">dataset</span> <span class="o">=</span> <span class="n">_dataset_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-<span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span>
-<span class="n">rtype</span> <span class="o">=</span> <span class="bp">None</span>
-
-<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'all'</span>
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/latest$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'latest'</span>
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/ifl/[A-z]{3,3}$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'ifl'</span>
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/ifl/[A-z]{3,3}/</span><span class="err">\</span><span class="s">d$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'ifl_id1'</span>        
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/[A-z]{3,3}$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'iso'</span>
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/[A-z]{3,3}/</span><span class="err">\</span><span class="s">d+$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'id1'</span>
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/wdpa/</span><span class="err">\</span><span class="s">d+$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'wdpa'</span>
-<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/use/[A-z]+/</span><span class="err">\</span><span class="s">d+$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'use'</span>
-</code></pre>
-
 <h1 id="documentation-conventions">Documentation Conventions</h1>
 
 <ul>
@@ -93,6 +66,14 @@
 
 <ul>
 <li>all under a module/namespace named API</li>
+<li>i am thinking each section should be namespaced:
+
+<ul>
+<li>GFW::API.forestChange.national(&hellip;)</li>
+<li>GFW::API.forestChange.subnational(&hellip;)</li>
+<li>GFW::API.forestChange.geometry(&hellip;)</li>
+<li>&hellip;</li>
+</ul></li>
 <li>camelCase for method names</li>
 <li>&hellip;</li>
 </ul>
@@ -169,12 +150,12 @@
 </tbody></table>
 <pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
 
-<span class="no">GFW</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">forestChange</span><span class="p">(.</span><span class="nf">.</span><span class="o">.</span><span class="p">)</span>
+<span class="no">GFW</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">forestChange</span><span class="p">.</span><span class="nf">national</span><span class="p">(.</span><span class="nf">.</span><span class="o">.</span><span class="p">)</span>
 </code></pre>
 <pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="s">'gfw-python'</span>
 
 <span class="kn">import</span> <span class="nn">gfw</span>
-<span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forestChange</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">national</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
 </code></pre>
 
