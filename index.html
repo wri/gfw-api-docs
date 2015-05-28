@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","ruby","python"]);
+          setupLanguages(["ruby","python"]);
         });
       </script>
   </head>
@@ -28,7 +28,6 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
         </div>
@@ -48,11 +47,54 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+<p>Welcome the future home for the documentation for the GFW-API.  Much of what follows is example documentation from <a href="https://github.com/tripit/slate">slate</a> and will be removed shortly.  <strong>This documentation is currently under development</strong> and for now is nothing more than a few notes to help us get started.</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<h1 id="endpoints">Endpoints</h1>
 
-<p>This example API documentation page was created with <a href="http://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&rsquo;s documentation.</p>
+<p>Example: /forest-change/forma-alerts/admin/iso =&gt; (forma-alerts, iso)</p>
+
+<p>As a starting point, under the python tab on the right is the python code for the forest change endpoints.</p>
+<pre class="highlight python"><code><span class="n">dataset</span> <span class="o">=</span> <span class="n">_dataset_from_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">"/"</span><span class="p">)</span>
+<span class="n">rtype</span> <span class="o">=</span> <span class="bp">None</span>
+
+<span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'all'</span>
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/latest$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'latest'</span>
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/ifl/[A-z]{3,3}$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'ifl'</span>
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/ifl/[A-z]{3,3}/</span><span class="err">\</span><span class="s">d$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'ifl_id1'</span>        
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/[A-z]{3,3}$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'iso'</span>
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/admin/[A-z]{3,3}/</span><span class="err">\</span><span class="s">d+$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'id1'</span>
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/wdpa/</span><span class="err">\</span><span class="s">d+$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'wdpa'</span>
+<span class="k">elif</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r'forest-change/</span><span class="si">%</span><span class="s">s/use/[A-z]+/</span><span class="err">\</span><span class="s">d+$'</span> <span class="o">%</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+    <span class="n">rtype</span> <span class="o">=</span> <span class="s">'use'</span>
+</code></pre>
+
+<h1 id="conventions">Conventions</h1>
+
+<p>We still need to flush this out naming convetions to should be as close to the same for all as possible for all languages. As a first go I&rsquo;d say:</p>
+
+<ul>
+<li>all under a module/namespace named API</li>
+<li>snake_case for method names</li>
+<li>&hellip;</li>
+</ul>
+<pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
+
+<span class="no">GFW</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">forest_change</span><span class="p">(.</span><span class="nf">.</span><span class="o">.</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="s">'gfw-python'</span>
+
+<span class="kn">import</span> <span class="nn">gfw</span>
+<span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forest_change</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+</code></pre>
 
 <h1 id="authentication">Authentication</h1>
 
@@ -265,7 +307,6 @@ Remember — a happy kitten is an authenticated kitten!
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
                 <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
           </div>
