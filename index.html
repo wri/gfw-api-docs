@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["ruby","python"]);
+          setupLanguages(["shell","ruby","python"]);
         });
       </script>
   </head>
@@ -28,6 +28,7 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
         </div>
@@ -76,13 +77,24 @@
     <span class="n">rtype</span> <span class="o">=</span> <span class="s">'use'</span>
 </code></pre>
 
+<h1 id="documentation-conventions">Documentation Conventions</h1>
+
+<ul>
+<li>endpoint</li>
+<li>required parameters it takes</li>
+<li>optional parameters</li>
+<li>method-name for client libraries</li>
+<li>description</li>
+<li>examples</li>
+</ul>
+
 <h1 id="conventions">Conventions</h1>
 
 <p>We still need to flush this out naming convetions to should be as close to the same for all as possible for all languages. As a first go I&rsquo;d say:</p>
 
 <ul>
 <li>all under a module/namespace named API</li>
-<li>snake_case for method names</li>
+<li>camel_case for method names</li>
 <li>&hellip;</li>
 </ul>
 <pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
@@ -307,6 +319,7 @@ Remember — a happy kitten is an authenticated kitten!
       </div>
       <div class="dark-box">
           <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
                 <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
           </div>
