@@ -101,47 +101,6 @@
     rtype = &lsquo;all&rsquo;</p>
 
 <h2 id="national">National</h2>
-
-<p>elif re.match(r&#39;forest-change/%s/admin/[A-z]{3,3}$&rsquo; % dataset, path):
-    rtype = &#39;iso&rsquo;</p>
-
-<p><code class="prettyprint">GET http://http://staging.gfw-apis.appspot.com/forest-change/&lt;DATA-SET&gt;/admin/&lt;ISO&gt;</code></p>
-
-<h3 id="optional-query-parameters">Optional Query Parameters</h3>
-
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>period</td>
-<td>&hellip;</td>
-<td>time period to search for alerts</td>
-</tr>
-<tr>
-<td>download</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-</tr>
-<tr>
-<td>geojson</td>
-<td>&hellip;</td>
-<td>*required for &hellip;</td>
-</tr>
-<tr>
-<td>dev</td>
-<td>&hellip;</td>
-<td>&hellip;</td>
-</tr>
-<tr>
-<td>bust</td>
-<td>&hellip;</td>
-<td>cache or no</td>
-</tr>
-</tbody></table>
 <pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
 
 <span class="no">GFW</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">forestChange</span><span class="p">.</span><span class="nf">national</span><span class="p">(</span><span class="n">iso</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="p">{})</span>
@@ -152,10 +111,6 @@
 <span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">national</span><span class="p">(</span><span class="n">iso</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="p">{})</span>
 
 </code></pre>
-
-<aside class="success">
-EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
-</aside>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -197,6 +152,51 @@ EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/ID
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
+
+<p>elif re.match(r&#39;forest-change/%s/admin/[A-z]{3,3}$&rsquo; % dataset, path):
+    rtype = &#39;iso&rsquo;</p>
+
+<p><code class="prettyprint">GET http://http://staging.gfw-apis.appspot.com/forest-change/&lt;DATA-SET&gt;/admin/&lt;ISO&gt;</code></p>
+
+<h3 id="optional-query-parameters">Optional Query Parameters</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>period</td>
+<td>&hellip;</td>
+<td>time period to search for alerts</td>
+</tr>
+<tr>
+<td>download</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td>geojson</td>
+<td>&hellip;</td>
+<td>*required for &hellip;</td>
+</tr>
+<tr>
+<td>dev</td>
+<td>&hellip;</td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td>bust</td>
+<td>&hellip;</td>
+<td>cache or no</td>
+</tr>
+</tbody></table>
+
+<aside class="success">
+EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
+</aside>
 
 <h2 id="sub-national">Sub-National</h2>
 
