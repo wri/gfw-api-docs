@@ -2,7 +2,6 @@
 title: API Reference
 
 language_tabs:
-  - shell
   - ruby
   - python
 
@@ -18,11 +17,59 @@ search: true
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Welcome the future home for the documentation for the GFW-API.  Much of what follows is example documentation from [slate](https://github.com/tripit/slate) and will be removed shortly.  **This documentation is currently under development** and for now is nothing more than a few notes to help us get started.
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Endpoints
 
-This example API documentation page was created with [Slate](http://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Example: /forest-change/forma-alerts/admin/iso => (forma-alerts, iso)
+
+As a starting point, under the python tab on the right is the python code for the forest change endpoints.
+
+```python
+dataset = _dataset_from_path(path)
+path = path.strip("/")
+rtype = None
+
+if re.match(r'forest-change/%s$' % dataset, path):
+    rtype = 'all'
+elif re.match(r'forest-change/%s/latest$' % dataset, path):
+    rtype = 'latest'
+elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}$' % dataset, path):
+    rtype = 'ifl'
+elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}/\d$' % dataset, path):
+    rtype = 'ifl_id1'        
+elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
+    rtype = 'iso'
+elif re.match(r'forest-change/%s/admin/[A-z]{3,3}/\d+$' % dataset, path):
+    rtype = 'id1'
+elif re.match(r'forest-change/%s/wdpa/\d+$' % dataset, path):
+    rtype = 'wdpa'
+elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
+    rtype = 'use'
+```
+
+# Conventions
+
+We still need to flush this out naming convetions to should be as close to the same for all as possible for all languages. As a first go I'd say:
+
+* all under a module/namespace named API
+* snake_case for method names
+* ...
+
+```ruby
+gem install 'gfw-ruby'
+
+GFW::API.forest_change(...)
+```
+
+```python
+pip install 'gfw-python'
+
+import gfw
+gfw.API.forest_change(...)
+
+```
+
 
 # Authentication
 
