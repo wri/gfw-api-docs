@@ -13,7 +13,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["shell","ruby","python"]);
+          setupLanguages(["ruby","python"]);
         });
       </script>
   </head>
@@ -28,7 +28,6 @@
     <div class="tocify-wrapper">
       <img src="images/logo.png" />
         <div class="lang-selector">
-              <a href="#" data-language-name="shell">shell</a>
               <a href="#" data-language-name="ruby">ruby</a>
               <a href="#" data-language-name="python">python</a>
         </div>
@@ -48,7 +47,9 @@
       <div class="content">
         <h1 id="introduction">Introduction</h1>
 
-<p>Welcome the future home for the documentation for the GFW-API.  Much of what follows is example documentation from <a href="https://github.com/tripit/slate">slate</a> and will be removed shortly.  <strong>This documentation is currently under development</strong> and for now is nothing more than a few notes to help us get started.</p>
+<p><strong>This documentation is currently under development</strong></p>
+
+<p>Welcome the future home for the documentation for the GFW-API. For now this is nothing more than a few notes to help us get started.</p>
 
 <h1 id="endpoints">Endpoints</h1>
 
@@ -90,173 +91,167 @@
 
 <h1 id="conventions">Conventions</h1>
 
-<p>We still need to flush this out naming convetions to should be as close to the same for all as possible for all languages. As a first go I&rsquo;d say:</p>
-
 <ul>
 <li>all under a module/namespace named API</li>
-<li>camel_case for method names</li>
+<li>camelCase for method names</li>
 <li>&hellip;</li>
 </ul>
-<pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
 
-<span class="no">GFW</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">forest_change</span><span class="p">(.</span><span class="nf">.</span><span class="o">.</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="s">'gfw-python'</span>
+<h1 id="forestchange">ForestChange</h1>
 
-<span class="kn">import</span> <span class="nn">gfw</span>
-<span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forest_change</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<p>The following API calls require one of the following datasets as a url parameter (<DATA-SET>).</p>
 
-</code></pre>
+<ul>
+<li>forma-alerts</li>
+<li>umd-loss-gain</li>
+<li>nasa-active-fires</li>
+<li>quicc-alerts</li>
+<li>imazon-alerts</li>
+<li>terrai-alerts</li>
+</ul>
 
-<h1 id="authentication">Authentication</h1>
+<p>Example http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01</p>
 
-<blockquote>
-<p>To authorize, use this code:</p>
-</blockquote>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h2 id="all">All</h2>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<p>if re.match(r&#39;forest-change/%s$&rsquo; % dataset, path):
+    rtype = &lsquo;all&rsquo;</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
+<h2 id="national">National</h2>
 
-<blockquote>
-<p>Make sure to replace <code class="prettyprint">meowmeowmeow</code> with your API key.</p>
-</blockquote>
+<p>elif re.match(r&#39;forest-change/%s/admin/[A-z]{3,3}$&rsquo; % dataset, path):
+    rtype = &#39;iso&rsquo;</p>
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
-
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code class="prettyprint">Authorization: meowmeowmeow</code></p>
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-<h1 id="kittens">Kittens</h1>
-
-<h2 id="get-all-kittens">Get All Kittens</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
-
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre>
-
-<p>This endpoint retrieves all kittens.</p>
-
-<h3 id="http-request">HTTP Request</h3>
-
-<p><code class="prettyprint">GET http://example.com/kittens</code></p>
+<p><code class="prettyprint">GET http://http://staging.gfw-apis.appspot.com/forest-change/&lt;DATA-SET&gt;/admin/&lt;ISO&gt;</code></p>
 
 <h3 id="query-parameters">Query Parameters</h3>
+
+<p>&#39;all&rsquo;: [&#39;period&rsquo;, &#39;download&rsquo;, &#39;geojson&rsquo;, &#39;dev&rsquo;, &#39;bust&rsquo;],</p>
 
 <table><thead>
 <tr>
 <th>Parameter</th>
 <th>Default</th>
+<th>Required</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>period</td>
+<td>&hellip;</td>
+<td>False</td>
+<td>time period to search for alerts</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>download</td>
+<td>&hellip;</td>
+<td>False</td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td>geojson</td>
+<td>&hellip;</td>
+<td>&ndash;</td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td>dev</td>
+<td>&hellip;</td>
+<td>False</td>
+<td>&hellip;</td>
+</tr>
+<tr>
+<td>bust</td>
+<td>&hellip;</td>
+<td>False</td>
+<td>&hellip;</td>
 </tr>
 </tbody></table>
+<pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
+
+<span class="no">GFW</span><span class="o">::</span><span class="no">API</span><span class="p">.</span><span class="nf">forestChange</span><span class="p">(.</span><span class="nf">.</span><span class="o">.</span><span class="p">)</span>
+</code></pre>
+<pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="s">'gfw-python'</span>
+
+<span class="kn">import</span> <span class="nn">gfw</span>
+<span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forestChange</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+</code></pre>
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
 </aside>
-
-<h2 id="get-a-specific-kitten">Get a Specific Kitten</h2>
-<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre>
-<pre class="highlight shell"><code>curl <span class="s2">"http://example.com/api/kittens/3"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Isis"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="s2">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">140256</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"max_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> 
+  </span><span class="s2">"min_date"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"apis"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+     </span><span class="s2">"national"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://staging.gfw-apis.appspot.com/forma-alerts/admin{/iso}{?period,download,bust,dev}"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"subnational"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://staging.gfw-apis.appspot.com/forma-alerts/admin{/iso}{/id1}{?period,download,bust,dev}"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"use"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://staging.gfw-apis.appspot.com/forma-alerts/use/{/name}{/id}{?period,download,bust,dev}"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"wdpa"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://staging.gfw-apis.appspot.com/forma-alerts/wdpa/{/id}{?period,download,bust,dev}"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"world"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://staging.gfw-apis.appspot.com/forma-alerts{?period,geojson,download,bust,dev}"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> 
+  </span><span class="s2">"download_urls"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"csv"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&amp;version=v1&amp;format=csv"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"geojson"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&amp;version=v1&amp;format=geojson"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"kml"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&amp;version=v1&amp;format=kml"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"shp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&amp;version=v1&amp;format=shp"</span><span class="p">,</span><span class="w"> </span><span class="s2">"svg"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&amp;version=v1&amp;format=svg"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> 
+  </span><span class="s2">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"coverage"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Humid tropical forest biome"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Forest disturbances alerts."</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"forma-alerts"</span><span class="p">,</span><span class="w"> </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FORMA Alerts"</span><span class="p">,</span><span class="w">
+     </span><span class="s2">"resolution"</span><span class="p">:</span><span class="w"> </span><span class="s2">"500 x 500 meters"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MODIS"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"timescale"</span><span class="p">:</span><span class="w"> 
+     </span><span class="s2">"January 2006 to present"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"units"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Alerts"</span><span class="p">,</span><span class="w"> 
+     </span><span class="s2">"updates"</span><span class="p">:</span><span class="w"> </span><span class="s2">"16 day"</span><span class="w">
+  </span><span class="p">},</span><span class="w"> 
+  </span><span class="s2">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="s2">"begin"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2010-01-01"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"end"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2013-01-01"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"iso"</span><span class="p">:</span><span class="w"> 
+    </span><span class="s2">"IDN"</span><span class="p">,</span><span class="w"> 
+    </span><span class="s2">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"v1"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>This endpoint retrieves a specific kitten.</p>
+<h2 id="sub-national">Sub-National</h2>
 
-<aside class="warning">If you&rsquo;re not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+<p>elif re.match(r&#39;forest-change/%s/admin/[A-z]{3,3}/\d+$&rsquo; % dataset, path):
+    rtype = &#39;id1&rsquo;</p>
 
-<h3 id="http-request">HTTP Request</h3>
+<h2 id="national-(intact-forest-landscapes)">National (Intact Forest Landscapes)</h2>
 
-<p><code class="prettyprint">GET http://example.com/kittens/&lt;ID&gt;</code></p>
+<p>elif re.match(r&#39;forest-change/%s/admin/ifl/[A-z]{3,3}$&rsquo; % dataset, path):
+    rtype = &#39;ifl&rsquo;</p>
 
-<h3 id="url-parameters">URL Parameters</h3>
+<h2 id="sub-national-(intact-forest-landscapes)">Sub-National (Intact Forest Landscapes)</h2>
 
-<table><thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>ID</td>
-<td>The ID of the cat to retrieve</td>
-</tr>
-</tbody></table>
+<p>elif re.match(r&#39;forest-change/%s/admin/ifl/[A-z]{3,3}/\d$&rsquo; % dataset, path):
+    rtype = &#39;ifl_id1&rsquo;        </p>
+
+<h2 id="wpda">WPDA</h2>
+
+<p>elif re.match(r&#39;forest-change/%s/wdpa/\d+$&rsquo; % dataset, path):
+    rtype = &#39;wdpa&rsquo;</p>
+
+<h2 id="use">USE</h2>
+
+<p>elif re.match(r&#39;forest-change/%s/use/[A-z]+/\d+$&rsquo; % dataset, path):
+    rtype =  &#39;use&rsquo;</p>
+
+<h2 id="latest-updates-meta">LATEST UPDATES META</h2>
+
+<p>elif re.match(r&#39;forest-change/%s/latest$&rsquo; % dataset, path):
+    rtype = &#39;latest&rsquo;</p>
 
           <h1 id="errors">Errors</h1>
 
@@ -319,7 +314,6 @@ Remember — a happy kitten is an authenticated kitten!
       </div>
       <div class="dark-box">
           <div class="lang-selector">
-                <a href="#" data-language-name="shell">shell</a>
                 <a href="#" data-language-name="ruby">ruby</a>
                 <a href="#" data-language-name="python">python</a>
           </div>
