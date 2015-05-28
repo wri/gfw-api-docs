@@ -90,8 +90,14 @@ html, body {
   }
 
   // This is the logo at the top of the ToC
-  &>img {
+  &> span.logo-wrapper {
     display: block;
+    height: 75px;
+    background-color: #97bd3d;
+    padding-left: 75px;
+  }
+  &> span.logo-wrapper img {
+    height: 75px;
   }
 
   &>.search {

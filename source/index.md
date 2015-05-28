@@ -43,7 +43,7 @@ Welcome the future home for the documentation for the GFW-API. For now this is n
 
 # ForestChange
 
-The following API calls require one of the following datasets as a url parameter (<DATA-SET>).
+The following API calls require one of the following datasets \<DATA-SET\> as a url parameter.
 
 * forma-alerts
 * umd-loss-gain
@@ -66,28 +66,26 @@ elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
 
 `GET http://http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>`
 
-### Query Parameters
-        'all': ['period', 'download', 'geojson', 'dev', 'bust'],
-
-Parameter | Default | Required | Description
---------- | ------- | -------- | -----------
-period | ... | False | time period to search for alerts
-download | ... | False | ...
-geojson | ... | -- | ...
-dev | ... | False | ...
-bust | ... | False | ...
+### Optional Query Parameters
+Parameter | Default | Description
+--------- | ------- | -------- 
+period | ... | time period to search for alerts
+download | ... | ...
+geojson | ... | *required for ...  
+dev | ... | ...
+bust | ... | cache or no
 
 ```ruby
 gem install 'gfw-ruby'
 
-GFW::API.forestChange.national(...)
+GFW::API.forestChange.national(iso,options={})
 ```
 
 ```python
 pip install 'gfw-python'
 
 import gfw
-gfw.API.forestChange.national(...)
+gfw.API.forestChange.national(iso,options={})
 
 ```
 
@@ -104,16 +102,16 @@ EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/ID
   "min_date": null,
   "apis": {
      "national": "http://staging.gfw-apis.appspot.com/forma-alerts/admin{/iso}{?period,download,bust,dev}", 
-     "subnational": "http://staging.gfw-apis.appspot.com/forma-alerts/admin{/iso}{/id1}{?period,download,bust,dev}", 
-     "use": "http://staging.gfw-apis.appspot.com/forma-alerts/use/{/name}{/id}{?period,download,bust,dev}", 
-     "wdpa": "http://staging.gfw-apis.appspot.com/forma-alerts/wdpa/{/id}{?period,download,bust,dev}", 
-     "world": "http://staging.gfw-apis.appspot.com/forma-alerts{?period,geojson,download,bust,dev}"
+     "subnational": ..., 
+     "use": ..., 
+     "wdpa": ..., 
+     "world": ...
   }, 
   "download_urls": {
-    "csv": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=csv", 
-    "geojson": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=geojson",
-    "kml": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=kml", 
-    "shp": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=shp", "svg": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=svg"
+    "csv": "http://wri-01.cartodb.com/api/v1/...&format=csv", 
+    "geojson": "http://wri-01.cartodb.com/v1/...&format=geojson",
+    "kml": "http://wri-01.cartodb.com/api/v1/...&format=kml", 
+    "shp": "http://wri-01.cartodb.com/api/v1/...&format=svg"
   }, 
   "meta": {
     "coverage": "Humid tropical forest biome", 
