@@ -2,7 +2,6 @@
 title: API Reference
 
 language_tabs:
-  - shell
   - ruby
   - python
 
@@ -18,7 +17,9 @@ search: true
 
 # Introduction
 
-Welcome the future home for the documentation for the GFW-API.  Much of what follows is example documentation from [slate](https://github.com/tripit/slate) and will be removed shortly.  **This documentation is currently under development** and for now is nothing more than a few notes to help us get started.
+**This documentation is currently under development**
+
+Welcome the future home for the documentation for the GFW-API. For now this is nothing more than a few notes to help us get started.
 
 # Endpoints
 
@@ -60,166 +61,133 @@ elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
 
 # Conventions
 
-We still need to flush this out naming convetions to should be as close to the same for all as possible for all languages. As a first go I'd say:
-
 * all under a module/namespace named API
-* camel_case for method names
+* camelCase for method names
 * ...
+
+# ForestChange
+
+The following API calls require one of the following datasets as a url parameter (<DATA-SET>).
+
+* forma-alerts
+* umd-loss-gain
+* nasa-active-fires
+* quicc-alerts
+* imazon-alerts
+* terrai-alerts
+
+Example http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
+
+## All
+
+if re.match(r'forest-change/%s$' % dataset, path):
+    rtype = 'all'
+
+## National
+
+elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
+    rtype = 'iso'
+
+`GET http://http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>`
+
+### Query Parameters
+        'all': ['period', 'download', 'geojson', 'dev', 'bust'],
+
+Parameter | Default | Required | Description
+--------- | ------- | -------- | -----------
+period | ... | False | time period to search for alerts
+download | ... | False | ...
+geojson | ... | -- | ...
+dev | ... | False | ...
+bust | ... | False | ...
 
 ```ruby
 gem install 'gfw-ruby'
 
-GFW::API.forest_change(...)
+GFW::API.forestChange(...)
 ```
 
 ```python
 pip install 'gfw-python'
 
 import gfw
-gfw.API.forest_change(...)
+gfw.API.forestChange(...)
 
 ```
-
-
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
-```
-
-> The above command returns JSON structured like this:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Isis",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
 </aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/3"
-  -H "Authorization: meowmeowmeow"
-```
 
 > The above command returns JSON structured like this:
 
 ```json
 {
-  "id": 2,
-  "name": "Isis",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "value": 140256,
+  "max_date": null, 
+  "min_date": null,
+  "apis": {
+     "national": "http://staging.gfw-apis.appspot.com/forma-alerts/admin{/iso}{?period,download,bust,dev}", 
+     "subnational": "http://staging.gfw-apis.appspot.com/forma-alerts/admin{/iso}{/id1}{?period,download,bust,dev}", 
+     "use": "http://staging.gfw-apis.appspot.com/forma-alerts/use/{/name}{/id}{?period,download,bust,dev}", 
+     "wdpa": "http://staging.gfw-apis.appspot.com/forma-alerts/wdpa/{/id}{?period,download,bust,dev}", 
+     "world": "http://staging.gfw-apis.appspot.com/forma-alerts{?period,geojson,download,bust,dev}"
+  }, 
+  "download_urls": {
+    "csv": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=csv", 
+    "geojson": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=geojson",
+    "kml": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=kml", 
+    "shp": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=shp", "svg": "http://wri-01.cartodb.com/api/v1/sql?q=SELECT+f.%2A+FROM+forma_api+f+WHERE+f.date+%3E%3D+%272010-01-01%27%3A%3Adate+AND+f.date+%3C%3D+%272013-01-01%27%3A%3Adate+AND+f.iso+%3D+UPPER%28%27IDN%27%29&version=v1&format=svg"
+  }, 
+  "meta": {
+    "coverage": "Humid tropical forest biome", 
+    "description": "Forest disturbances alerts.", 
+    "id": "forma-alerts", "name": "FORMA Alerts",
+     "resolution": "500 x 500 meters", 
+     "source": "MODIS", 
+     "timescale": 
+     "January 2006 to present", 
+     "units": "Alerts", 
+     "updates": "16 day"
+  }, 
+  "params": {
+    "begin": "2010-01-01", 
+    "end": "2013-01-01", 
+    "iso": 
+    "IDN", 
+    "version": "v1"
+  }
 }
 ```
 
-This endpoint retrieves a specific kitten.
 
-<aside class="warning">If you're not using an administrator API key, note that some kittens will return 403 Forbidden if they are hidden for admins only.</aside>
+## Sub-National
 
-### HTTP Request
+elif re.match(r'forest-change/%s/admin/[A-z]{3,3}/\d+$' % dataset, path):
+    rtype = 'id1'
 
-`GET http://example.com/kittens/<ID>`
+## National (Intact Forest Landscapes)
 
-### URL Parameters
+elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}$' % dataset, path):
+    rtype = 'ifl'
 
-Parameter | Description
---------- | -----------
-ID | The ID of the cat to retrieve
+## Sub-National (Intact Forest Landscapes)
+
+elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}/\d$' % dataset, path):
+    rtype = 'ifl_id1'        
+
+## WPDA
+
+elif re.match(r'forest-change/%s/wdpa/\d+$' % dataset, path):
+    rtype = 'wdpa'
+
+## USE
+
+elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
+    rtype =  'use'
+
+## LATEST UPDATES META
+
+elif re.match(r'forest-change/%s/latest$' % dataset, path):
+    rtype = 'latest'
 
