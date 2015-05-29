@@ -8,6 +8,8 @@ language_tabs:
 toc_footers:
   - <a href='http://globalforestwatch.org'>Global Forest Watch</a>
   - <a href='http://www.wri.org/'>WRI</a>
+  - <a href='https://github.com/wri/gfw-lib-python'>Ruby Code</a>
+  - <a href='https://github.com/wri/gfw-lib-python'>Python Code</a>
 
 includes:
   - errors
@@ -32,6 +34,8 @@ Welcome the future home for the documentation for the GFW-API. For now this is n
 
 # Conventions
 
+* ruby gem `gfw-ruby`
+* python module `gfw-python`
 * all under a module/namespace named API
 * i am thinking each section should be namespaced:
   - GFW::API.forestChange.national(...)
