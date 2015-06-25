@@ -83,9 +83,9 @@
 <li>i am thinking each section should be namespaced:
 
 <ul>
-<li>GFW::API.forestChange.national(&hellip;)</li>
-<li>GFW::API.forestChange.subnational(&hellip;)</li>
-<li>GFW::API.forestChange.geometry(&hellip;)</li>
+<li>API::ForestChange.national(&hellip;)</li>
+<li>API::ForestChange.subnational(&hellip;)</li>
+<li>API::ForestChange.geometry(&hellip;)</li>
 <li>&hellip;</li>
 </ul></li>
 <li>camelCase for method names</li>
@@ -113,7 +113,9 @@
 <span class="c">#-&gt; []</span>
 </code></pre>
 
-<p>For reference this is how I&rsquo;ve set up the python lib:</p>
+<p>For reference I&rsquo;m throwing in some details about the python library below.  As a reminder its super important that the libraries are as identical as possible.  If someone has been working in ruby and then wants to go to python there should only be minimal changes they need to make.</p>
+
+<p><em>note:  in python ***params</em> as an argument allows me to do something like <code class="prettyprint">api.forestChange.national(&#39;forma&#39;,&#39;bra&#39;,bust=True,period=&#39;2012-01-01,2013-01-01&#39;)</code>. I don&rsquo;t think you can do this in ruby so <em>**params</em> should become <em>params={}</em>.  So you&rsquo;d have something closer to <code class="prettyprint">API::ForestChange.national(&#39;forma&#39;,&#39;bra&#39;,{bust: True,period: &#39;2012-01-01,2013-01-01&#39;})</code></p>
 
 <p>The gfw.api.forest_change module has the following methods:</p>
 
