@@ -24,6 +24,6 @@ We publish to GitHub pages, two steps:
 1. Push commits to master
 2. ```bundle exec rake publish```
 
-Step 2 actually compiles everything down and makes it live at [](http://wri.github.io/gfw-api-docs)
+Step 2 actually compiles everything down and makes it live at http://wri.github.io/gfw-api-docs
 
 
