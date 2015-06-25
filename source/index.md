@@ -91,9 +91,9 @@ The gfw.api.forest_change module has the following methods:
 * def nationalIFL(dataset,iso,**params)
 * def subnationalIFL(dataset,iso,id1,**params)
 * def wdpa(dataset,wdpa_id,**params)
-* def use(dataset,concessions,use_id,**params)
+* def use(dataset,concession,use_id,**params)
 
-In addition there is a `data` object on the forest_change module that contains information on the most recent request and the most recent response.  
+In addition there is a `data` object (actually an instance of the ForestChange Class) on the forest_change module that contains information on the most recent request and the most recent response.  
 
 See the python code tab for an example.
 
@@ -310,7 +310,7 @@ elif re.match(r'forest-change/%s/wdpa/\d+$' % dataset, path):
 ## USE
 
 
-* def use(dataset,concessions,use_id,**params)
+* def use(dataset,concession,use_id,**params)
 
 elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
     rtype =  'use'
