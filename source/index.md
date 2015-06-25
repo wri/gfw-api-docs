@@ -48,9 +48,9 @@ Here we need to describe how to install the client libraries.
 * python module `gfw-python`
 * all under a module/namespace named API
 * i am thinking each section should be namespaced:
-  - GFW::API.forestChange.national(...)
-  - GFW::API.forestChange.subnational(...)
-  - GFW::API.forestChange.geometry(...)
+  - API::ForestChange.national(...)
+  - API::ForestChange.subnational(...)
+  - API::ForestChange.geometry(...)
   - ...
 * camelCase for method names
 
@@ -78,7 +78,10 @@ api.forestChange.data.errors
 #-> []
 ```
 
-For reference this is how I've set up the python lib:
+For reference I'm throwing in some details about the python library below.  As a reminder its super important that the libraries are as identical as possible.  If someone has been working in ruby and then wants to go to python there should only be minimal changes they need to make.
+
+*note:  in python *\*\*params* as an argument allows me to do something like `api.forestChange.national('forma','bra',bust=True,period='2012-01-01,2013-01-01')`. I don't think you can do this in ruby so *\*\*params* should become *params={}*.  So you'd have something closer to `API::ForestChange.national('forma','bra',{bust: True,period: '2012-01-01,2013-01-01'})`
+
 
 The gfw.api.forest_change module has the following methods:
 
