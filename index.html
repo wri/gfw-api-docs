@@ -126,10 +126,10 @@
 <li>def nationalIFL(dataset,iso,**params)</li>
 <li>def subnationalIFL(dataset,iso,id1,**params)</li>
 <li>def wdpa(dataset,wdpa_id,**params)</li>
-<li>def use(dataset,concessions,use_id,**params)</li>
+<li>def use(dataset,concession,use_id,**params)</li>
 </ul>
 
-<p>In addition there is a <code class="prettyprint">data</code> object on the forest_change module that contains information on the most recent request and the most recent response.  </p>
+<p>In addition there is a <code class="prettyprint">data</code> object (actually an instance of the ForestChange Class) on the forest_change module that contains information on the most recent request and the most recent response.  </p>
 
 <p>See the python code tab for an example.</p>
 <pre class="highlight python"><code><span class="c">#</span>
@@ -378,7 +378,7 @@ EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/ID
 <h2 id="use">USE</h2>
 
 <ul>
-<li>def use(dataset,concessions,use_id,**params)</li>
+<li>def use(dataset,concession,use_id,**params)</li>
 </ul>
 
 <p>elif re.match(r&#39;forest-change/%s/use/[A-z]+/\d+$&rsquo; % dataset, path):
