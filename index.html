@@ -42,8 +42,8 @@
         <ul class="toc-footer">
             <li><a href='http://globalforestwatch.org'>Global Forest Watch</a></li>
             <li><a href='http://www.wri.org/'>WRI</a></li>
-            <li><a href='https://github.com/wri/gfw-lib-python'>Ruby Code</a></li>
-            <li><a href='https://github.com/wri/gfw-lib-python'>Python Code</a></li>
+            <li><a href='https://github.com/wri/gfw-ruby'>Ruby Code</a></li>
+            <li><a href='https://github.com/wri/gfw-python'>Python Code</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
@@ -66,6 +66,14 @@
 <li>examples</li>
 </ul>
 
+<h1 id="installation-and-requirements">Installation and Requirements</h1>
+<pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
+</code></pre>
+<pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="s">'gfw-python'</span>
+</code></pre>
+
+<p>Here we need to describe how to install the client libraries.</p>
+
 <h1 id="conventions">Conventions</h1>
 
 <ul>
@@ -81,10 +89,111 @@
 <li>&hellip;</li>
 </ul></li>
 <li>camelCase for method names</li>
-<li>&hellip;</li>
 </ul>
 
+<h2 id="python-example">Python Example</h2>
+<pre class="highlight python"><code><span class="kn">import</span> <span class="nn">gfw.api</span> <span class="kn">as</span> <span class="nn">api</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">national</span><span class="p">(</span><span class="s">'forma'</span><span class="p">,</span><span class="s">'bra'</span><span class="p">,</span><span class="n">bust</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">status_code</span> 
+<span class="c">#-&gt; 200</span>
+<span class="n">r</span><span class="o">.</span><span class="n">content</span>
+<span class="c">#-&gt; '{"apis": {"national":..}}'</span>
+<span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">'value'</span><span class="p">]</span>
+<span class="c">#-&gt; 79491</span>
+<span class="n">r</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">response</span>
+<span class="c">#-&gt; True</span>
+<span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">request</span>
+<span class="c">#-&gt;  {</span>
+      <span class="s">'datatype'</span><span class="p">:</span> <span class="s">'iso'</span><span class="p">,</span> 
+      <span class="s">'url'</span><span class="p">:</span> <span class="s">'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra'</span><span class="p">,</span> 
+      <span class="s">'params'</span><span class="p">:</span> <span class="p">{</span><span class="s">'bust'</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span> 
+      <span class="s">'dataset'</span><span class="p">:</span> <span class="s">'forma-alerts'</span>
+   <span class="p">}</span>
+<span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">errors</span>
+<span class="c">#-&gt; []</span>
+</code></pre>
+
+<p>For reference this is how I&rsquo;ve set up the python lib:</p>
+
+<p>The gfw.api.forest_change module has the following methods:</p>
+
+<ul>
+<li>def geometry(dataset,geom,**params)</li>
+<li>def national(dataset,iso,**params)</li>
+<li>def subnational(dataset,iso,id1,**params)</li>
+<li>def nationalIFL(dataset,iso,**params)</li>
+<li>def subnationalIFL(dataset,iso,id1,**params)</li>
+<li>def wdpa(dataset,wdpa_id,**params)</li>
+<li>def use(dataset,concessions,use_id,**params)</li>
+</ul>
+
+<p>In addition there is a <code class="prettyprint">data</code> object on the forest_change module that contains information on the most recent request and the most recent response.  </p>
+
+<p>See the python code tab for an example.</p>
+<pre class="highlight python"><code><span class="c">#</span>
+<span class="c"># period/begin/end - </span>
+<span class="c">#</span>
+<span class="k">def</span> <span class="nf">_clean_period</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">params</span><span class="p">):</span>
+    <span class="n">period</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'period'</span><span class="p">)</span>
+    <span class="n">begin</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'begin'</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">'end'</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">period</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">begin</span> <span class="ow">or</span> <span class="n">end</span><span class="p">):</span>
+      <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">begin</span><span class="p">:</span>
+        <span class="n">begin</span> <span class="o">=</span> <span class="s">"</span><span class="si">%</span><span class="s">s-01-01"</span> <span class="o">%</span> <span class="n">now</span><span class="o">.</span><span class="n">year</span> 
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">end</span><span class="p">:</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">Y-</span><span class="si">%</span><span class="s">m-</span><span class="si">%</span><span class="s">d'</span><span class="p">)</span>  
+      <span class="n">params</span><span class="p">[</span><span class="s">'period'</span><span class="p">]</span> <span class="o">=</span> <span class="s">"{begin},{end}"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">begin</span><span class="o">=</span><span class="n">begin</span><span class="p">,</span><span class="n">end</span><span class="o">=</span><span class="n">end</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">begin</span><span class="p">:</span>
+      <span class="k">del</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">'begin'</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">end</span><span class="p">:</span>
+      <span class="k">del</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s">'end'</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">params</span>
+</code></pre>
+
+<p><em>note: the gfw-api takes a url parameter &lsquo;period&rsquo; which is of the form &#39;begin-date,end-date&rsquo;.  I&rsquo;ve set up the library to accept a period or a begin or end value. period takes precedence over begin/end. if begin/end is not given it defaults to the beginning-of-the-year/current-date. see _clean_period in the python tab to clarify this logic.</em></p>
+
 <h1 id="forestchange">ForestChange</h1>
+<pre class="highlight python"><code><span class="n">formaData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moduleData</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span>
+        <span class="s">'name'</span><span class="p">:</span> <span class="s">'forma'</span><span class="p">,</span>
+        <span class="s">'url_id'</span><span class="p">:</span> <span class="s">'forma'</span><span class="p">,</span>
+        <span class="s">'email_name'</span><span class="p">:</span> <span class="s">'FORMA'</span><span class="p">,</span>
+        <span class="s">'summary'</span><span class="p">:</span><span class="s">'Detects areas where tree cover loss is likely to have recently occurred'</span><span class="p">,</span>
+        <span class="s">'specs'</span><span class="p">:</span><span class="s">'monthly, 500m, humid tropics, WRI/CGD'</span>
+    <span class="p">})</span>
+<span class="n">terraiData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moduleData</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span>
+        <span class="s">'name'</span><span class="p">:</span> <span class="s">'terrai'</span><span class="p">,</span>
+        <span class="s">'url_id'</span><span class="p">:</span> <span class="s">'terrailoss'</span><span class="p">,</span>
+        <span class="s">'email_name'</span><span class="p">:</span> <span class="s">'Terra-i'</span><span class="p">,</span>
+        <span class="s">'summary'</span><span class="p">:</span><span class="s">'Detects areas in Latin American where tree cover loss is likely to have recently occurred'</span><span class="p">,</span>
+        <span class="s">'specs'</span><span class="p">:</span><span class="s">'monthly, 250m, Latin America, CIAT'</span><span class="p">,</span>
+    <span class="p">})</span>
+<span class="n">imazonData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moduleData</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span>
+        <span class="s">'name'</span><span class="p">:</span> <span class="s">'imazon'</span><span class="p">,</span>
+        <span class="s">'url_id'</span><span class="p">:</span> <span class="s">'imazon'</span><span class="p">,</span>
+        <span class="s">'email_name'</span><span class="p">:</span> <span class="s">'SAD'</span><span class="p">,</span>
+        <span class="s">'summary'</span><span class="p">:</span><span class="s">'Detects forest cover loss and forest degradation in the Brazilian Amazon'</span><span class="p">,</span>
+        <span class="s">'specs'</span><span class="p">:</span><span class="s">'monthly, 250m, Brazilian Amazon, Imazon'</span><span class="p">,</span>
+        <span class="s">'value_names'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">'degrad'</span><span class="p">:</span> <span class="s">'hectares degradation'</span><span class="p">,</span>
+            <span class="s">'defor'</span><span class="p">:</span> <span class="s">'hectares deforestation'</span>
+        <span class="p">}</span>
+    <span class="p">})</span>     
+<span class="n">quiccData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_moduleData</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span>
+        <span class="s">'name'</span><span class="p">:</span> <span class="s">'quicc'</span><span class="p">,</span>
+        <span class="s">'url_id'</span><span class="p">:</span> <span class="s">'modis'</span><span class="p">,</span>
+        <span class="s">'email_name'</span><span class="p">:</span> <span class="s">'QUICC'</span><span class="p">,</span>
+        <span class="s">'summary'</span><span class="p">:</span><span class="s">'Identifies areas of land that have lost at least 40</span><span class="si">% </span><span class="s">of their green vegetation cover from the previous quarterly product'</span><span class="p">,</span>
+        <span class="s">'specs'</span><span class="p">:</span><span class="s">'quarterly, 5km, &lt;37 degrees north, NASA'</span>
+    <span class="p">},</span><span class="bp">True</span><span class="p">,</span><span class="n">force_min_date</span><span class="p">,</span><span class="n">force_max_date</span><span class="p">)</span>
+<span class="n">storiesData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_storiesData</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span>
+        <span class="s">'name'</span><span class="p">:</span> <span class="s">'stories'</span><span class="p">,</span>
+        <span class="s">'url_id'</span><span class="p">:</span> <span class="s">'none/580'</span><span class="p">,</span>
+        <span class="s">'summary'</span><span class="p">:</span><span class="s">'Forest-related stories reported by GFW users'</span><span class="p">,</span>
+        <span class="s">'specs'</span><span class="p">:</span><span class="s">''</span><span class="p">,</span>
+        <span class="s">'email_name'</span><span class="p">:</span> <span class="s">'Stories'</span>
+    <span class="p">})</span>
+</code></pre>
 
 <p>The following API calls require one of the following datasets &lt;DATA-SET&gt; as a url parameter.</p>
 
@@ -97,12 +206,18 @@
 <li>terrai-alerts</li>
 </ul>
 
+<p>We need to descibe these datasets somehow. The Python tab to the right temporarlly has some code pasted in containing short a short summary and specs to build off.  </p>
+
 <p>Example http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01</p>
 
 <h2 id="all">All</h2>
 
 <p>if re.match(r&#39;forest-change/%s$&rsquo; % dataset, path):
-    rtype = &lsquo;all&rsquo;</p>
+    rtype = &#39;all&rsquo;</p>
+
+<ul>
+<li>def geometry(dataset,geom,**params)</li>
+</ul>
 
 <h2 id="national">National</h2>
 <pre class="highlight ruby"><code><span class="n">gem</span> <span class="n">install</span> <span class="s1">'gfw-ruby'</span>
@@ -111,10 +226,30 @@
 </code></pre>
 <pre class="highlight python"><code><span class="n">pip</span> <span class="n">install</span> <span class="s">'gfw-python'</span>
 
-<span class="kn">import</span> <span class="nn">gfw</span>
-<span class="n">gfw</span><span class="o">.</span><span class="n">API</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">national</span><span class="p">(</span><span class="n">iso</span><span class="p">,</span><span class="n">options</span><span class="o">=</span><span class="p">{})</span>
-
+<span class="kn">import</span> <span class="nn">gfw.api</span> <span class="kn">as</span> <span class="nn">api</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">national</span><span class="p">(</span><span class="s">'forma'</span><span class="p">,</span><span class="s">'bra'</span><span class="p">,</span><span class="n">bust</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">status_code</span> 
+<span class="c">#-&gt; 200</span>
+<span class="n">r</span><span class="o">.</span><span class="n">content</span>
+<span class="c">#-&gt; '{"apis": {"national":..}}'</span>
+<span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">()[</span><span class="s">'value'</span><span class="p">]</span>
+<span class="c">#-&gt; 79491</span>
+<span class="n">r</span> <span class="o">==</span> <span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">response</span>
+<span class="c">#-&gt; True</span>
+<span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">request</span>
+<span class="c">#-&gt;  {</span>
+      <span class="s">'datatype'</span><span class="p">:</span> <span class="s">'iso'</span><span class="p">,</span> 
+      <span class="s">'url'</span><span class="p">:</span> <span class="s">'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra'</span><span class="p">,</span> 
+      <span class="s">'params'</span><span class="p">:</span> <span class="p">{</span><span class="s">'bust'</span><span class="p">:</span> <span class="bp">True</span><span class="p">},</span> 
+      <span class="s">'dataset'</span><span class="p">:</span> <span class="s">'forma-alerts'</span>
+   <span class="p">}</span>
+<span class="n">api</span><span class="o">.</span><span class="n">forestChange</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">errors</span>
+<span class="c">#-&gt; []</span>
 </code></pre>
+
+<ul>
+<li>def national(dataset,iso,**params)</li>
+</ul>
 
 <blockquote>
 <p>The above command returns JSON structured like this:</p>
@@ -204,25 +339,45 @@ EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/ID
 
 <h2 id="sub-national">Sub-National</h2>
 
+<ul>
+<li>def subnational(dataset,iso,id1,**params)</li>
+</ul>
+
 <p>elif re.match(r&#39;forest-change/%s/admin/[A-z]{3,3}/\d+$&rsquo; % dataset, path):
     rtype = &#39;id1&rsquo;</p>
 
 <h2 id="national-(intact-forest-landscapes)">National (Intact Forest Landscapes)</h2>
+
+<ul>
+<li>def nationalIFL(dataset,iso,**params)</li>
+</ul>
 
 <p>elif re.match(r&#39;forest-change/%s/admin/ifl/[A-z]{3,3}$&rsquo; % dataset, path):
     rtype = &#39;ifl&rsquo;</p>
 
 <h2 id="sub-national-(intact-forest-landscapes)">Sub-National (Intact Forest Landscapes)</h2>
 
+<ul>
+<li>def subnationalIFL(dataset,iso,id1,**params)</li>
+</ul>
+
 <p>elif re.match(r&#39;forest-change/%s/admin/ifl/[A-z]{3,3}/\d$&rsquo; % dataset, path):
     rtype = &#39;ifl_id1&rsquo;        </p>
 
 <h2 id="wpda">WPDA</h2>
 
+<ul>
+<li>def wdpa(dataset,wdpa_id,**params)</li>
+</ul>
+
 <p>elif re.match(r&#39;forest-change/%s/wdpa/\d+$&rsquo; % dataset, path):
     rtype = &#39;wdpa&rsquo;</p>
 
 <h2 id="use">USE</h2>
+
+<ul>
+<li>def use(dataset,concessions,use_id,**params)</li>
+</ul>
 
 <p>elif re.match(r&#39;forest-change/%s/use/[A-z]+/\d+$&rsquo; % dataset, path):
     rtype =  &#39;use&rsquo;</p>
@@ -231,6 +386,14 @@ EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/ID
 
 <p>elif re.match(r&#39;forest-change/%s/latest$&rsquo; % dataset, path):
     rtype = &#39;latest&rsquo;</p>
+
+<h1 id="countries">Countries</h1>
+
+<p>&hellip;</p>
+
+<h1 id="stories">Stories</h1>
+
+<p>&hellip;</p>
 
           <h1 id="errors">Errors</h1>
 
