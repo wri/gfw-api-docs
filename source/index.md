@@ -11,9 +11,6 @@ toc_footers:
   - <a href='https://github.com/wri/gfw-ruby'>Ruby Code</a>
   - <a href='https://github.com/wri/gfw-python'>Python Code</a>
 
-includes:
-  - errors
-
 search: true
 ---
 
@@ -21,203 +18,25 @@ search: true
 
 **This documentation is currently under development**
 
-Welcome the future home for the documentation for the GFW-API. For now this is nothing more than a few notes to help us get started.
+Welcome the future home for the documentation for the GFW-API.
 
-# Documentation Conventions
-
-* endpoint
-* required parameters it takes
-* optional parameters
-* method-name for client libraries
-* description
-* examples
 
 # Installation and Requirements 
 ```ruby
+# future: currently not released
 gem install 'gfw-ruby'
 ```
 ```python
+# future: currently not released
 pip install 'gfw-python'
 ```
-Here we need to describe how to install the client libraries.
 
+Client libraries should be released in the standard way.
 
-# Conventions
+# API-Spec
 
-* ruby gem `gfw-ruby`
-* python module `gfw-python`
-* all under a module/namespace named API
-* i am thinking each section should be namespaced:
-  - API::ForestChange.national(...)
-  - API::ForestChange.subnational(...)
-  - API::ForestChange.geometry(...)
-  - ...
-* camelCase for method names
-
-## Python Example
-
-```python
-import gfw.api as api
-r = api.forestChange.national('forma','bra',bust=True)
-r.status_code 
-#-> 200
-r.content
-#-> '{"apis": {"national":..}}'
-r.json()['value']
-#-> 79491
-r == api.forestChange.data.response
-#-> True
-api.forestChange.data.request
-#->  {
-      'datatype': 'iso', 
-      'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra', 
-      'params': {'bust': True}, 
-      'dataset': 'forma-alerts'
-   }
-api.forestChange.data.errors
-#-> []
-```
-
-For reference I'm throwing in some details about the python library below.  As a reminder its super important that the libraries are as identical as possible.  If someone has been working in ruby and then wants to go to python there should only be minimal changes they need to make.
-
-*note:  in python *\*\*params* as an argument allows me to do something like `api.forestChange.national('forma','bra',bust=True,period='2012-01-01,2013-01-01')`. I don't think you can do this in ruby so *\*\*params* should become *params={}*.  So you'd have something closer to `API::ForestChange.national('forma','bra',{bust: True,period: '2012-01-01,2013-01-01'})`
-
-
-The gfw.api.forest_change module has the following methods:
-
-* def geometry(dataset,geom,**params)
-* def national(dataset,iso,**params)
-* def subnational(dataset,iso,id1,**params)
-* def nationalIFL(dataset,iso,**params)
-* def subnationalIFL(dataset,iso,id1,**params)
-* def wdpa(dataset,wdpa_id,**params)
-* def use(dataset,concession,use_id,**params)
-
-In addition there is a `data` object (actually an instance of the ForestChange Class) on the forest_change module that contains information on the most recent request and the most recent response.  
-
-See the python code tab for an example.
-
-```python
-#
-# period/begin/end - 
-#
-def _clean_period(self,params):
-    period = params.get('period')
-    begin = params.get('begin')
-    end = params.get('end')
-    if (not period) and (begin or end):
-      now = datetime.now()
-      if not begin:
-        begin = "%s-01-01" % now.year 
-      if not end:
-        end = now.strftime('%Y-%m-%d')  
-      params['period'] = "{begin},{end}".format(begin=begin,end=end)
-    if begin:
-      del(params['begin'])
-    if end:
-      del(params['end'])
-    return params
-```
-*note: the gfw-api takes a url parameter 'period' which is of the form 'begin-date,end-date'.  I've set up the library to accept a period or a begin or end value. period takes precedence over begin/end. if begin/end is not given it defaults to the beginning-of-the-year/current-date. see _clean_period in the python tab to clarify this logic.*
 
 # ForestChange
-```python
-formaData = self._moduleData(s,{
-        'name': 'forma',
-        'url_id': 'forma',
-        'email_name': 'FORMA',
-        'summary':'Detects areas where tree cover loss is likely to have recently occurred',
-        'specs':'monthly, 500m, humid tropics, WRI/CGD'
-    })
-terraiData = self._moduleData(s,{
-        'name': 'terrai',
-        'url_id': 'terrailoss',
-        'email_name': 'Terra-i',
-        'summary':'Detects areas in Latin American where tree cover loss is likely to have recently occurred',
-        'specs':'monthly, 250m, Latin America, CIAT',
-    })
-imazonData = self._moduleData(s,{
-        'name': 'imazon',
-        'url_id': 'imazon',
-        'email_name': 'SAD',
-        'summary':'Detects forest cover loss and forest degradation in the Brazilian Amazon',
-        'specs':'monthly, 250m, Brazilian Amazon, Imazon',
-        'value_names': {
-            'degrad': 'hectares degradation',
-            'defor': 'hectares deforestation'
-        }
-    })     
-quiccData = self._moduleData(s,{
-        'name': 'quicc',
-        'url_id': 'modis',
-        'email_name': 'QUICC',
-        'summary':'Identifies areas of land that have lost at least 40% of their green vegetation cover from the previous quarterly product',
-        'specs':'quarterly, 5km, <37 degrees north, NASA'
-    },True,force_min_date,force_max_date)
-storiesData = self._storiesData(s,{
-        'name': 'stories',
-        'url_id': 'none/580',
-        'summary':'Forest-related stories reported by GFW users',
-        'specs':'',
-        'email_name': 'Stories'
-    })
-```
-
-The following API calls require one of the following datasets \<DATA-SET\> as a url parameter.
-
-* forma-alerts
-* umd-loss-gain
-* nasa-active-fires
-* quicc-alerts
-* imazon-alerts
-* terrai-alerts
-
-We need to descibe these datasets somehow. The Python tab to the right temporarlly has some code pasted in containing short a short summary and specs to build off.  
-
-Example http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
-
-## All
-
-if re.match(r'forest-change/%s$' % dataset, path):
-    rtype = 'all'
-
-* def geometry(dataset,geom,**params)
-
-## National
-
-```ruby
-gem install 'gfw-ruby'
-
-GFW::API.forestChange.national(iso,options={})
-```
-
-```python
-pip install 'gfw-python'
-
-import gfw.api as api
-r = api.forestChange.national('forma','bra',bust=True)
-r.status_code 
-#-> 200
-r.content
-#-> '{"apis": {"national":..}}'
-r.json()['value']
-#-> 79491
-r == api.forestChange.data.response
-#-> True
-api.forestChange.data.request
-#->  {
-      'datatype': 'iso', 
-      'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra', 
-      'params': {'bust': True}, 
-      'dataset': 'forma-alerts'
-   }
-api.forestChange.data.errors
-#-> []
-```
-
-* def national(dataset,iso,**params)
-
-> The above command returns JSON structured like this:
 
 ```json
 {
@@ -258,70 +77,325 @@ api.forestChange.data.errors
 }
 ```
 
-elif re.match(r'forest-change/%s/admin/[A-z]{3,3}$' % dataset, path):
-    rtype = 'iso'
+The following API calls require one of the following datasets \<DATA-SET\> as a url parameter.
 
-`GET http://http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>`
+* forma-alerts
+* umd-loss-gain
+* nasa-active-fires
+* quicc-alerts
+* imazon-alerts
+* terrai-alerts
 
 ### Optional Query Parameters
-Parameter | Default | Description
---------- | ------- | -------- 
-period | ... | time period to search for alerts
-download | ... | ...
-geojson | ... | *required for ...  
-dev | ... | ...
-bust | ... | cache or no
+Parameter | Description
+--------- | -------- 
+period | comma seperated string of the form \< begin-date \>,\< end-date \> . *both ruby and python library also accepts 'begin' and 'end' in place of period parameter
+download | ...
+dev | ...
+bust | if true cache 
 
-<aside class="success">
-EXAMPLE: http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01
-</aside>
+As and example, the JSON to our right is the output you receive from:
 
-## Sub-National
+[http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01](http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01)
 
-* def subnational(dataset,iso,id1,**params)
+## Geometry
 
-elif re.match(r'forest-change/%s/admin/[A-z]{3,3}/\d+$' % dataset, path):
-    rtype = 'id1'
+```ruby
+GFW::API.forest_change.geometry('forma',geom,begin='2012-01-01',end='2012-06-15')
+```
+
+```python
+import gfw.api as api
+geom = {...} # python dict as geom - also accepts a json string
+r = api.forest_change.geometry('forma',geom,begin='2012-01-01',end='2012-06-15')
+r.status_code 
+#-> 200
+r.content
+#-> '{"apis": {"national":..}}'
+r.json()['value']
+#-> 79491
+r == api.forest_change.data.response
+#-> True
+api.forest_change.data.request
+#->  {
+      'datatype': 'iso', 
+      'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra', 
+      'params': {'bust': True}, 
+      'dataset': 'forma-alerts'
+   }
+api.forest_change.data.errors
+#-> []
+```
+
+
+`GET http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>`
+
+### Additional Required Query Parameters
+Parameter | Description
+--------- | -------- 
+geojson | geojson for the region of interest. *python library accepts json string or dict. *ruby library accepts json string or hash 
+
+Example [http://beta.gfw-apis.appspot.com/forest-change/forma-alerts?period=2010-01-01,2013-01-01&geojson={"coordinates":[[[98.7890625,2.8991526985043006],[102.83203125,-5.703447982149503],[107.57812499999999,-2.7235830833483856],[98.7890625,2.8991526985043006]]],"type":"Polygon"}](http://beta.gfw-apis.appspot.com/forest-change/forma-alerts?period=2010-01-01,2013-01-01&geojson={"coordinates":[[[98.7890625,2.8991526985043006],[102.83203125,-5.703447982149503],[107.57812499999999,-2.7235830833483856],[98.7890625,2.8991526985043006]]],"type":"Polygon"})
+
+## National
+
+```ruby
+GFW::API.forest_change.national('forma','bra',bust=True)
+```
+
+```python
+import gfw.api as api
+r = api.forest_change.national('forma','bra',bust=True)
+r.status_code 
+#-> 200
+r.content
+#-> '{"apis": {"national":..}}'
+r.json()['value']
+#-> 79491
+r == api.forest_change.data.response
+#-> True
+api.forest_change.data.request
+#->  {
+      'datatype': 'iso', 
+      'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra', 
+      'params': {'bust': True}, 
+      'dataset': 'forma-alerts'
+   }
+api.forest_change.data.errors
+#-> []
+```
+
+`GET http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>`
+
+### Required Query Parameters
+Parameter | Description
+--------- | -------- 
+iso | 3 character ISO country code
+
+EXAMPLE:
+[http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01](http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN?period=2010-01-01,2013-01-01)
+
+## Subnational
+
+```ruby
+GFW::API.forest_change.subnational('forma','bra',1,bust=True)
+```
+
+```python
+import gfw.api as api
+r = api.forest_change.subnational('forma','bra',1,bust=True)
+r.status_code 
+#-> 200
+r.content
+#-> '{"apis": {"national":..}}'
+r.json()['value']
+#-> 79491
+r == api.forest_change.data.response
+#-> True
+api.forest_change.data.request
+#->  {
+      'datatype': 'iso', 
+      'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/bra', 
+      'params': {'bust': True}, 
+      'dataset': 'forma-alerts'
+   }
+api.forest_change.data.errors
+#-> []
+```
+
+`GET http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/admin/<ISO>/<ID1>`
+
+### Additional Required Query Parameters
+Parameter | Description
+--------- | -------- 
+iso | 3 character ISO country code
+id1 | Subnational region index
+
+EXAMPLE:
+[http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN/1?period=2010-01-01,2013-01-01](http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/admin/IDN/1?period=2010-01-01,2013-01-01)
 
 ## National (Intact Forest Landscapes)
 
+...
 
-* def nationalIFL(dataset,iso,**params)
+## Subnational (Intact Forest Landscapes)
 
-elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}$' % dataset, path):
-    rtype = 'ifl'
-
-## Sub-National (Intact Forest Landscapes)
-
-
-* def subnationalIFL(dataset,iso,id1,**params)
-
-elif re.match(r'forest-change/%s/admin/ifl/[A-z]{3,3}/\d$' % dataset, path):
-    rtype = 'ifl_id1'        
+...        
 
 ## WPDA
 
+```ruby
+GFW::API.forest_change.wdpa('forma',30,bust=True)
+```
 
-* def wdpa(dataset,wdpa_id,**params)
+```python
+import gfw.api as api
+r = api.forest_change.wdpa('forma',30,bust=True)
+r.status_code 
+#-> 200
+r.content
+#-> '{"apis": {"national":..}}'
+r.json()['value']
+#-> 337
+r == api.forest_change.data.response
+#-> True
+api.forest_change.data.request
+#->  {
+       'datatype': 'wdpa',
+       'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/wdpa/30',
+       'params': {},
+       'dataset': 'forma-alerts'
+      }
+api.forest_change.data.errors
+#-> []
+```
 
-elif re.match(r'forest-change/%s/wdpa/\d+$' % dataset, path):
-    rtype = 'wdpa'
+`GET http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/wdpa/<WDPA_ID>`
+
+### Additional Required Query Parameters
+Parameter | Description
+--------- | -------- 
+wdpa-id | ...
+
+EXAMPLE:
+[http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/wdpa/3](http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/wdpa/3)
 
 ## USE
 
+```ruby
+GFW::API.forest_change.use('forma','oilpalm','1930',bust=True)
+```
 
-* def use(dataset,concession,use_id,**params)
+```python
+import gfw.api as api
+r = api.forest_change.use('forma','oilpalm','1930',bust=True)
+r.status_code 
+#-> 200
+r.content
+#-> '{"apis": {"national":..}}'
+r.json()['value']
+#-> 13
+r == api.forest_change.data.response
+#-> True
+api.forest_change.data.request
+#->  {
+      'datatype': 'use',
+      'url': 'http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/use/oilpalm/1930',
+      'concession': 'oilpalm',
+      'params': {},
+      'dataset': 'forma-alerts'
+    }
+api.forest_change.data.errors
+#-> []
+```
 
-elif re.match(r'forest-change/%s/use/[A-z]+/\d+$' % dataset, path):
-    rtype =  'use'
+`GET http://staging.gfw-apis.appspot.com/forest-change/<DATA-SET>/use/<CONCESSION>/<USE_ID>`
 
-## LATEST UPDATES META
+### Additional Required Query Parameters
+Parameter | Description
+--------- | -------- 
+concession | mining,oilpalm,fiber,logging
+use-id | ...
 
-elif re.match(r'forest-change/%s/latest$' % dataset, path):
-    rtype = 'latest'
+EXAMPLE:
+[http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/use/oilpalm/1930](http://staging.gfw-apis.appspot.com/forest-change/forma-alerts/use/oilpalm/1930)
 
 # Countries
+
+*a quick description of kind of data the countries api returns*
+
+## National
+
+```ruby
+GFW::API.countries.national('forma','bra',bust=True)
+```
+
+```python
+import gfw.api as api
+r = api.countries.national('forma','bra')
+r.status_code 
+#-> 200
+r.content
+#-> '{"bounds": {"coordinates": [[[-74.018474690454596,..}}'
+r.json()['value']
+#-> 79491
+r == api.countries.data.response
+#-> True
+api.countries.data.request
+#->   {
+        'datatype': 'iso',
+        'url': 'http://staging.gfw-apis.appspot.com/countries/bra',
+        'params': {},
+        'dataset': 'forma-alerts'
+      }
+api.countries.data.errors
+#-> []
+```
+
+`GET http://staging.gfw-apis.appspot.com/countries/<ISO>`
+
+### Required Query Parameters
+Parameter | Description
+--------- | -------- 
+iso | 3 character ISO country code
+
+EXAMPLE:
+[http://staging.gfw-apis.appspot.com/countries/bra](http://staging.gfw-apis.appspot.com/countries/bra)
+
+## Subnational
+
+```ruby
+GFW::API.countries.subnational('forma','bra',1,bust=True)
+```
+
+```python
+import gfw.api as api
+r = api.countries.subnational('forma','bra',1,bust=True)
+r.status_code 
+#-> 200
+r.content
+#-> '{"bounds": {"coordinates": [[[-74.018474690454596,..}}'
+r.json()['value']
+#-> 13
+r == api.countries.data.response
+#-> True
+api.countries.data.request
+#->  {
+      'datatype': 'iso', 
+      'url': 'http://staging.gfw-apis.appspot.com/countries/forma-alerts/admin/bra', 
+      'params': {'bust': True}, 
+      'dataset': 'forma-alerts'
+   }
+api.countries.data.errors
+#-> []
+```
+
+`GET http://staging.gfw-apis.appspot.com/countries/<ISO>/<ID1>`
+
+### Additional Required Query Parameters
+Parameter | Description
+--------- | -------- 
+iso | 3 character ISO country code
+id1 | Subnational region index
+
+EXAMPLE:
+[http://staging.gfw-apis.appspot.com/countries/bra/2](http://staging.gfw-apis.appspot.com/countries/bra/2)
+
+
+# Subscriptions
+## Subscribe
+...
+## Unsubscribe
+...
+## Confirm
 ...
 
 # Stories
 ...
+## create
+...
+## get
+...
+## list
+...
+
